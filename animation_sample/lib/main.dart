@@ -1,5 +1,7 @@
 import 'package:animation_sample/notification_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,35 +18,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends HookConsumerWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   final NotificationService _notificationService = NotificationService();
-  @override
-  void initState() {
-    super.initState();
-    _notificationService.init(context: context);
-    // WidgetsBinding.instance.addObserver();
-  }
-
-  // void listenNotifications() =>
-  //     _notificationService.notificationStream.stream.listen((event) {
-  //       callBackFunction(event);
-  //     });
-  // void callBackFunction(NotificationResponse? payload) {
-  //   print('This is just callback??');
-  // }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -58,10 +41,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    useEffect(() {
+      _notificationService.init(context: context);
+      return;
+    }, const []);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -104,11 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -39,20 +39,15 @@ class NotificationService {
       required DateTime taskDue}) async {
     if (_initNotification(now, taskDue)) {
       _localNotificationHandler.show(
-          id, title, body, _createNotificationDetails(id, title, body),
+          id, title, body, _createNotificationDetails(),
           payload: payLoad);
     }
   }
 
   ///
-  /// Create Notification Details
+  /// Create a new instance of Notification Details
   ///
-  NotificationDetails _createNotificationDetails(
-      int id, String title, String body) {
-    // final NotificationDetails _notificationDetails = NotificationDetails(
-    //   android: AndroidNotificationDetails(id.toString(), 'title',
-    //       channelDescription: body),
-    // );
+  NotificationDetails _createNotificationDetails() {
     // TODO: I need to understand what this guy is doing
     const NotificationDetails _notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -72,7 +67,7 @@ class NotificationService {
   /// [taskDueDate]　タスクの締め切り日時
   ///
   bool _initNotification(DateTime currentDate, DateTime taskDueDate) {
-    // Task will be notified 3 days before
+    // Task will be notified 3 days before or overdue
     if (taskDueDate.difference(currentDate).inDays <= 3.0) {
       return true;
     }
