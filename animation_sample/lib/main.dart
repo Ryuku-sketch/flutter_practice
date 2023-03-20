@@ -10,7 +10,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,17 +27,6 @@ class MyHomePage extends HookConsumerWidget {
   final String title;
 
   final NotificationService _notificationService = NotificationService();
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      // FlutterAppBadger.removeBadge();
-      print('App is resumed');
-    }
-    if (state == AppLifecycleState.paused) {
-      print('App is paused');
-    }
-  }
 
   @override
   Widget build(BuildContext context, ref) {
